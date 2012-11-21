@@ -1,9 +1,15 @@
 <!-- Schedule Management -->
 
+<jsp:root xmlns:jsp="http://java.sun.com/JSP/Page"
+  xmlns:c="http://java.sun.com/jsp/jstl/core"
+  version="2.0">
+
 <html>
 <head>
 	<style type = "text/css" media = "screen">@import url("main.css");@import url("schedule_management.css");</style>
-	<script src="main.js"></script>
+
+	<script src = "http://code.jquery.com/jquery-latest.min.js"></script>
+	<script src = "main.js"></script>
 </head>
 
 <body>
@@ -35,21 +41,15 @@
 		<div id = "sideInput">
 
 			<!-- Semester -->
-			<select id = "professorSchedulerSemester" onchange = "changeSemester();">
+			<select id = "semester" name = "semester">
 				<option>Semester</option>
-				<%
-					for(int i = 0; i < arraylist.size; ++i)
-					{
-						String semester = (String)list.get(i);
-				%>
-				<option value = "<%= semester%>"><%= semester%></option>
-				<%
-					}
-				%>	
+                <c:forEach items="${semester}" var="option">
+                    <option value="${option.key}" ${param.semester == option.key ? 'selected' : ''}>${option.value}</option>
+                </c:forEach>
 			</select>
 
 			<!-- Professor Name -->
-			<select id = "professorSchedulerProfessor">
+			<select id = "professor" name = "professor" disabled>
 				<option>Professor</option>
 			</select>
 
@@ -59,12 +59,12 @@
 				<label>Schedule</label>
 
 				<!-- Course -->
-				<select id = "professorSchedulerCourse">
+				<select id = "course" disabled>
 					<option>Course:Section</option>
 				</select>
 
 				<!-- Room -->
-				<select id = "professorSchedulerRoom">
+				<select id = "room" disabled>
 					<option>Room</option>
 				</select>
 
@@ -79,42 +79,49 @@
 						</tr>
 
 						<tr>
-							<td><input name = "monday" id = "monday" type = "checkbox"></td>
-							<td><input name = "tuesday" id = "tuesday" type = "checkbox"></td>
-							<td><input name = "wednesday" id = "wednesday" type = "checkbox"></td>
-							<td><input name = "thursday" id = "thursday" type = "checkbox"></td>
-							<td><input name = "friday" id = "friday" type = "checkbox"></td>
+							<td><input name = "monday" id = "monday" type = "checkbox"  disabled></td>
+							<td><input name = "tuesday" id = "tuesday" type = "checkbox"  disabled></td>
+							<td><input name = "wednesday" id = "wednesday" type = "checkbox"  disabled></td>
+							<td><input name = "thursday" id = "thursday" type = "checkbox"  disabled></td>
+							<td><input name = "friday" id = "friday" type = "checkbox"  disabled></td>
 						</tr>
 					</table>
 
 				<!-- Time -->
-				<select id = "professorSchedulerTime">
+				<select id = "hours" disabled>
 					<option>Hours</option>
+					<option value = "8:30" disabled>8:30AM - 10:00AM</option>
+					<option value = "10:00" disabled>10:00AM - 11:30AM</option>
+					<option value = "11:30" disabled>11:30AM - 1:00PM</option>
+					<option value = "1:00" disabled>1:00PM - 2:30PM</option>
+					<option value = "2:30" disabled>2:30PM - 4:00PM</option>
+					<option value = "4:00" disabled>4:00PM - 5:30PM</option>
+					<option value = "6:00" disabled>6:00PM - 9:00PM</option>
 				</select>
 
-				<button name = "submitSchedule" type = "submit">Submit</button>
+				<button name = "submitSchedule" type = "submit" disabled>Submit</button>
 
-				<button name = "deleteSchedule" type = "submit">Delete</button>
+				<button name = "deleteSchedule" type = "submit" disabled>Delete</button>
 
 			</div>
 		
 
 			<!--@@@@@@@@@@@@@@@@@@@ PROFESSOR PREFERENCES @@@@@@@@@@@@@@@@@@@-->
-			<div id = "professorPreferences">
+			<div id = "professorPreferences" disabled>
 				<label>Professor Preference</label>
 
 				<!-- Days -->
-				<select id = "professorPreferencesDays">
+				<select id = "prefDay" disabled>
 					<option>Day</option>
 				</select>
 
 				<!-- Hours -->
-				<select id = "professorPreferencesHours">
+				<select id = "prefHours" disabled>
 					<option>Hours</option>
 				</select>
 
-				<button name = "submitPreference" type = "submit">Submit</button>
-				<button name = "deletePreference" type = "submit">Delete</button>
+				<button name = "submitPreference" type = "submit" disabled>Submit</button>
+				<button name = "deletePreference" type = "submit" disabled>Delete</button>
 			</div>
 
 		</div>
@@ -147,14 +154,14 @@
 				<table>
 					<tr>
 						<td>
-							<label>Professor: </label>
+							Professor: <label></label>
 						</td>
 						<td align = "right">
-							<label>Semester: </label>
+							Semester: <label></label>
 						</td>
 					</tr>
 				</table>
-				<label>Courses Teaching:  </label> <label>(Min: </label> <label>, Max: </label> <label>)</label>
+				Courses Teaching: <label></label> (Min: <label></label>, Max: <label></label>)
 
 
 				<!-- Calendar table -->
