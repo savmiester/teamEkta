@@ -6,7 +6,8 @@
 	Created by: David Morris
 	For use only by (except given permission by the creator):
 		Team Ektha in CS683 - Software Project Management @ NJIT
-		Members:	David Morris
+		Members:
+				David Morris
 				Eddie Pagan
 				Shruthi Shankaran
 				Savio Dsouza
@@ -122,9 +123,24 @@ table
 		text-align: left;
 
 		padding: 0px;
+		margin-bottom: 10px;
 		margin-right: 10px;
-		margin-bottom: 25px; /* Provide extra space on the bottom of the page */
 		
 		float: right;
+	}
+	
+	
+	/*  @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@  */
+	/*  @@@@@@@@@@@@@@@@@@@@@@@@@@@@ Footer @@@@@@@@@@@@@@@@@@@@@@@@@@@  */
+	/*  @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@  */
+	#footer
+	{
+		text-align: center;
+		font-size: 9px;
+	
+		border-top-style: solid;
+		border-top-width: 1px;
+	
+		clear: both;
 	}
 

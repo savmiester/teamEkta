@@ -24,6 +24,10 @@
 
 	border-width: 1px;
 	border-style: solid;
+	
+	margin-bottom: 10px;
+
+	overflow: hidden;
 
 	float: left;
 }
@@ -100,5 +104,6 @@
 
 #content > #professorCalendar > table
 {
+	empty-cells: show;
 	width: 100%;
 }

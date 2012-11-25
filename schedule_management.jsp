@@ -1,5 +1,6 @@
 <!-- Schedule Management -->
 
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <jsp:root xmlns:jsp="http://java.sun.com/JSP/Page"
   xmlns:c="http://java.sun.com/jsp/jstl/core"
   version="2.0">
@@ -22,12 +23,13 @@
 
 		<div id = "header">
 			<noscript>You MUST have javascript enabled on this page or it will not be functional!!</noscript>
+			<h2 id = "windowSize"></h2>
 
 			<div id = "banner">University Course Scheduler</div>
 
 			<div id = "menu">
-				<b>Schedule Management</b> &nbsp | &nbsp
-				<a href = "administration.jsp">Administration</a> &nbsp | &nbsp
+				<b>Schedule Management</b> &nbsp; | &nbsp;
+				<a href = "administration.jsp">Administration</a> &nbsp; | &nbsp;
 				<a href = "reports.jsp">Reports</a>
 			</div>
 
@@ -42,15 +44,15 @@
 
 			<!-- Semester -->
 			<select id = "semester" name = "semester">
-				<option>Semester</option>
-                <c:forEach items="${semester}" var="option">
-                    <option value="${option.key}" ${param.semester == option.key ? 'selected' : ''}>${option.value}</option>
-                </c:forEach>
+				<option value = "-1" selected>Semester</option>
+				<c:forEach items="${semester}" var="option">
+					<option value="${option.key}" ${param.semester == option.key ? 'selected' : ''}>${option.value}</option>
+				</c:forEach>
 			</select>
 
 			<!-- Professor Name -->
 			<select id = "professor" name = "professor" disabled>
-				<option>Professor</option>
+				<option value = "-1" selected>Professor</option>
 			</select>
 
 
@@ -60,12 +62,12 @@
 
 				<!-- Course -->
 				<select id = "course" disabled>
-					<option>Course:Section</option>
+					<option value = "-1" selected>Course:Section</option>
 				</select>
 
 				<!-- Room -->
 				<select id = "room" disabled>
-					<option>Room</option>
+					<option value = "-1" selected>Room</option>
 				</select>
 
 				<label>Select day(s):</label>
@@ -89,19 +91,19 @@
 
 				<!-- Time -->
 				<select id = "hours" disabled>
-					<option>Hours</option>
-					<option value = "8:30" disabled>8:30AM - 10:00AM</option>
-					<option value = "10:00" disabled>10:00AM - 11:30AM</option>
-					<option value = "11:30" disabled>11:30AM - 1:00PM</option>
-					<option value = "1:00" disabled>1:00PM - 2:30PM</option>
-					<option value = "2:30" disabled>2:30PM - 4:00PM</option>
-					<option value = "4:00" disabled>4:00PM - 5:30PM</option>
-					<option value = "6:00" disabled>6:00PM - 9:00PM</option>
+					<option value = "-1" selected>Hours</option>
+					<option value = "0" disabled>8:30AM - 10:00AM</option>
+					<option value = "1" disabled>10:00AM - 11:30AM</option>
+					<option value = "2" disabled>11:30AM - 1:00PM</option>
+					<option value = "3" disabled>1:00PM - 2:30PM</option>
+					<option value = "4" disabled>2:30PM - 4:00PM</option>
+					<option value = "5" disabled>4:00PM - 5:30PM</option>
+					<option value = "6" disabled>6:00PM - 9:00PM</option>
 				</select>
 
-				<button name = "submitSchedule" type = "submit" disabled>Submit</button>
+				<button id = "submitSchedule" name = "submitSchedule" type = "submit" disabled>Submit</button>
 
-				<button name = "deleteSchedule" type = "submit" disabled>Delete</button>
+				<button id = "deleteSchedule" name = "deleteSchedule" type = "submit" disabled>Delete</button>
 
 			</div>
 		
@@ -112,16 +114,16 @@
 
 				<!-- Days -->
 				<select id = "prefDay" disabled>
-					<option>Day</option>
+					<option value = "-1" selected>Day</option>
 				</select>
 
 				<!-- Hours -->
 				<select id = "prefHours" disabled>
-					<option>Hours</option>
+					<option value = "-1" selected>Hours</option>
 				</select>
 
-				<button name = "submitPreference" type = "submit" disabled>Submit</button>
-				<button name = "deletePreference" type = "submit" disabled>Delete</button>
+				<button id = "submitPreference" name = "submitPreference" type = "submit" disabled>Submit</button>
+				<button id = "deletePreference" name = "deletePreference" type = "submit" disabled>Delete</button>
 			</div>
 
 		</div>
@@ -153,15 +155,13 @@
 			<div id = "professorCalendar">
 				<table>
 					<tr>
-						<td>
-							Professor: <label></label>
-						</td>
-						<td align = "right">
-							Semester: <label></label>
-						</td>
+						<td id = "professorDisplay"></td>
+						<td id = "semesterDisplay" align = "right"></td>
+					</tr>
+					<tr>
+						<td id = "coursesCount"></td>
 					</tr>
 				</table>
-				Courses Teaching: <label></label> (Min: <label></label>, Max: <label></label>)
 
 
 				<!-- Calendar table -->
@@ -177,71 +177,78 @@
 
 					<tr>
 						<td>8:30AM - 10:00AM</td>
-						<td id = "M1">&nbsp</td>
-						<td id = "T1">&nbsp</td>
-						<td id = "W1">&nbsp</td>
-						<td id = "H1">&nbsp</td>
-						<td id = "F1">&nbsp</td>
+						<td id = "M1"></td>
+						<td id = "T1"></td>
+						<td id = "W1"></td>
+						<td id = "H1"></td>
+						<td id = "F1"></td>
 					</tr>
 
 					<tr>
 						<td>10:00AM - 11:30AM</td>
-						<td id = "M2">&nbsp</td>
-						<td id = "T2">&nbsp</td>
-						<td id = "W2">&nbsp</td>
-						<td id = "H2">&nbsp</td>
-						<td id = "F2">&nbsp</td>
+						<td id = "M2"></td>
+						<td id = "T2"></td>
+						<td id = "W2"></td>
+						<td id = "H2"></td>
+						<td id = "F2"></td>
 					</tr>
 
 					<tr>
 						<td>11:30AM - 1:00PM</td>
-						<td id = "M3">&nbsp</td>
-						<td id = "T3">&nbsp</td>
-						<td id = "W3">&nbsp</td>
-						<td id = "H3">&nbsp</td>
-						<td id = "F3">&nbsp</td>
+						<td id = "M3"></td>
+						<td id = "T3"></td>
+						<td id = "W3"></td>
+						<td id = "H3"></td>
+						<td id = "F3"></td>
 					</tr>
 
 					<tr>
 						<td>1:00PM - 2:30PM</td>
-						<td id = "M4">&nbsp</td>
-						<td id = "T4">&nbsp</td>
-						<td id = "W4">&nbsp</td>
-						<td id = "H4">&nbsp</td>
-						<td id = "F4">&nbsp</td>
+						<td id = "M4"></td>
+						<td id = "T4"></td>
+						<td id = "W4"></td>
+						<td id = "H4"></td>
+						<td id = "F4"></td>
 					</tr>
 
 					<tr>
 						<td>2:30PM - 4:00PM</td>
-						<td id = "M5">&nbsp</td>
-						<td id = "T5">&nbsp</td>
-						<td id = "W5">&nbsp</td>
-						<td id = "H5">&nbsp</td>
-						<td id = "F5">&nbsp</td>
+						<td id = "M5"></td>
+						<td id = "T5"></td>
+						<td id = "W5"></td>
+						<td id = "H5"></td>
+						<td id = "F5"></td>
 					</tr>
 
 					<tr>
 						<td>4:00PM - 5:30PM</td>
-						<td id = "M6">&nbsp</td>
-						<td id = "T6">&nbsp</td>
-						<td id = "W6">&nbsp</td>
-						<td id = "H6">&nbsp</td>
-						<td id = "F6">&nbsp</td>
+						<td id = "M6"></td>
+						<td id = "T6"></td>
+						<td id = "W6"></td>
+						<td id = "H6"></td>
+						<td id = "F6"></td>
 					</tr>
 
 					<tr>
 						<td>6:00PM - 9:00PM</td>
-						<td id = "M7">&nbsp</td>
-						<td id = "T7">&nbsp</td>
-						<td id = "W7">&nbsp</td>
-						<td id = "H7">&nbsp</td>
-						<td id = "F7">&nbsp</td>
+						<td id = "M7"></td>
+						<td id = "T7"></td>
+						<td id = "W7"></td>
+						<td id = "H7"></td>
+						<td id = "F7"></td>
 					</tr>
 				</table>	
 
 			</div>
 
 		</div>
+
+
+		<div id = "footer">
+			Copyright 2012 Ektha<br>
+			Designed and developed for CS683 - Software Project Management Fall 2012 project at <a href = "http://www.njit.edu/" target = "_blank">NJIT</a>.
+		</div>
+		
 	</div>
 
 
