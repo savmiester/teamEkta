@@ -7,10 +7,12 @@
 				Eddie Pagan
 				Shruthi Shankaran
 				Savio Dsouza
-	November 15, 2012
+
+	Inititally created on: November 15, 2012
+	Last updated: December 6, 2012
 
 
-	Uses JQuery, JSON, and AJAX.
+	Uses JQuery and JSON.
 */
 
 
@@ -223,7 +225,6 @@ function fillProfessorOptions()
 			});
 
 			boxList.attr('disabled', false);
-			alert("success"); //&&&
 		}
 	});
 }
@@ -249,7 +250,6 @@ function fillCourseOptions()
 			});
 
 			boxList.attr('disabled', false);
-			alert("success"); //&&&
 		}
 	});
 }
@@ -275,7 +275,6 @@ function fillRoomOptions()
 			});
 
 			boxList.attr('disabled', false);
-			alert("success"); //&&&
 		}
 	});
 }
@@ -301,7 +300,6 @@ function fillPrefDayOptions()
 			});
 
 			boxList.attr('disabled', false);
-			alert("success"); //&&&
 		}
 	});
 }
@@ -404,7 +402,7 @@ function updateCalendar()
 */
 	emptyCalendar();
 
-	$.getJSON(servletUrl, function(key, value) // Calls up Java doGet with parameters
+	$.getJSON(servletUrl, function(options) // Calls up Java doGet with parameters
 	{
 		$('#M1').text(value.M1);
 		$('#T1').text(value.T1);
@@ -453,7 +451,7 @@ function updateCalendar()
 
 function emptyCalendar()
 {
-	for(i = 1; i <=7; ++i)
+	for(i = 1; i <= 7; ++i)
 	{
 		$('#M' + i).text("");
 		$('#T' + i).text("");
@@ -472,7 +470,7 @@ function semesterDisplay()
 {
 	var servletUrl = 'semesterDisplay';
 
-	$.getJSON(servletUrl, function(key, value) // Calls up Java doGet with parameters
+	$.getJSON(servletUrl, function(options) // Calls up Java doGet with parameters
 	{
 		$('#semesterDisplay').text("Semester: " + value);
 	});
@@ -487,7 +485,7 @@ function professorDisplay()
 {
 	var servletUrl = 'professorDisplay';
 
-	$.getJSON(servletUrl, function(key, value) // Calls up Java doGet with parameters
+	$.getJSON(servletUrl, function(options) // Calls up Java doGet with parameters
 	{
 		$('#professorDisplay').text("Professor: " + value);
 	});
@@ -502,7 +500,7 @@ function updateProfessorCoursesCount()
 	var output = "Courses Teaching: " + current +
 					" (Min: " + minimum + ", Max: " + maximum + ")";
 
-	$.getJSON(servletUrl, function(key, value) // Calls up Java doGet with parameters
+	$.getJSON(servletUrl, function(options) // Calls up Java doGet with parameters
 	{
 		current = value.current;
 		minimum = value.min;
@@ -523,7 +521,7 @@ function submitSchedule()
 
 	if($('#monday').is(':checked'))
 	{
-		dayChecked = 0";
+		dayChecked = 0;
 	}
 
 	if($('#tuesday').is(':checked'))
@@ -546,8 +544,16 @@ function submitSchedule()
 		dayChecked = dayChecked + 8;
 	}
 
+	$.getJSON(servletUrl, function(options) // Calls up Java doGet with parameters
+	{
+		updateProfessorCoursesCount();
+		updateCalendar();
 
-	$.post(servletUrl,                   // Should call up Java doPost with requesting parameters
+		alert("Success?");
+	});
+
+
+	/*$.post(servletUrl,                   // Should call up Java doPost with requesting parameters
 		{                                    // of the below for validation and input to database
 			semester:  $('#semester').val(),
 			professor: $('#professor').val(),
@@ -556,7 +562,7 @@ function submitSchedule()
 			day:       dayChecked,
 			hours:     $('#hours').val()
 		}, function() { alert("The schedule has been updated"); }
-	);
+	);*/
 
 
 	/*$.ajax(servletUrl,                     // Should call up Java doPost with requesting parameters
@@ -574,10 +580,8 @@ function submitSchedule()
 	//$.ajax({data: JSON.stringify($('#M1')), contentType : 'application/json', type : 'POST'});
 
 
-	updateProfessorCoursesCount();
-	updateCalendar();
 
-	alert("Success?");
+
 }
 
 function deleteSchedule()
@@ -587,7 +591,7 @@ function deleteSchedule()
 
 	if($('#monday').is(':checked'))
 	{
-		dayChecked = 0";
+		dayChecked = 0;
 	}
 
 	if($('#tuesday').is(':checked'))
@@ -610,8 +614,16 @@ function deleteSchedule()
 		dayChecked = dayChecked + 8;
 	}
 
+	$.getJSON(servletUrl, function(options) // Calls up Java doGet with parameters
+	{
+		updateProfessorCoursesCount();
+		updateCalendar();
 
-	$.post(servletUrl,
+		alert("Success?");
+	});
+
+
+	/*$.post(servletUrl,
 		{
 			semester:  $('#semester').val(),
 			professor: $('#professor').val(),
@@ -620,7 +632,7 @@ function deleteSchedule()
 			day:       dayChecked,
 			hours:     $('#hours').val()
 		}, function() { alert("The schedule has been updated"); }
-	);
+	);*/
 
 
 	/*$.ajax(servletUrl,
@@ -633,25 +645,27 @@ function deleteSchedule()
 		hours:     $('#hours').val()
 	});*/
 
-	updateProfessorCoursesCount();
-	updateCalendar();
-
-	alert("Success?");
 }
 
 function submitPreference()
 {
 	var servletUrl = 'submitPreference';
 
+	$.getJSON(servletUrl, function(options) // Calls up Java doGet with parameters
+	{
+		updateCalendar();
 
-	$.post(servletUrl,
+		alert("Success?");
+	});
+
+	/*$.post(servletUrl,
 		{
 			semester:  $('#semester').val(),
 			professor: $('#professor').val(),
 			prefDay:   $('#prefDay').val(),
 			prefHours: $('#prefHours').val()
 		}, function() { alert("The schedule has been updated"); }
-	);
+	);*/
 
 
 	/*$.ajax(servletUrl,
@@ -661,25 +675,28 @@ function submitPreference()
 		prefDay:   $('#prefDay').val(),
 		prefHours: $('#prefHours').val()
 	});*/
-
-
-	updateCalendar();
-
-	alert("Success?");
 }
 
 function deletePreference()
 {
 	var servletUrl = 'deletePreference';
 
-	$.post(servletUrl,
+	$.getJSON(servletUrl, function(options) // Calls up Java doGet with parameters
+	{
+		updateProfessorCoursesCount();
+		updateCalendar();
+
+		alert("Success?");
+	});
+
+	/*$.post(servletUrl,
 		{
 			semester:  $('#semester').val(),
 			professor: $('#professor').val(),
 			prefDay:   $('#prefDay').val(),
 			prefHours: $('#prefHours').val()
 		}, function() { alert("The schedule has been updated"); }
-	);
+	);*/
 
 
 	/*$.ajax(servletUrl,
@@ -689,9 +706,5 @@ function deletePreference()
 		course:    $('#prefDay').val(),
 		room:      $('#prefHours').val()
 	});*/
-
-	updateCalendar();
-
-	alert("Success?");
 }
 /*************************************************************************/
